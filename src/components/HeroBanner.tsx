@@ -52,7 +52,7 @@ export default function EcommerceBannerWithSliding() {
     <div>
       {/* Main Sliding Banner */}
       <div
-        className="h-[500px] w-full bg-cover bg-center relative transition-all duration-1000"
+        className="h-[400px] w-full bg-cover bg-center relative transition-all duration-1000"
         style={{
           backgroundImage: `url(${currentBanner?.image})`, // Use product image as the banner image
         }}
