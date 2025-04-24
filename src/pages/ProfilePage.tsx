@@ -1,11 +1,14 @@
 import React from 'react';
 import Auth from '../pages/AuthPage'
+import Footer from '../components/Footer'
+import Header from '../components/Header'
 
 export default function ProfilePage() {
   return (
-    <div>
-    
+    <>
+    <Header/>
       <Auth />
-    </div>
+    <Footer/>
+    </>
   )
 }

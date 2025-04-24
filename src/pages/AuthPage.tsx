@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { login, signup } from '../services/authService'
 import { useAuthStore } from '../store/authStore'
-import { Link } from 'react-router-dom'
 import Footer from '../components/Footer'
-import Header from '../components/Header'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -26,10 +24,7 @@ export default function AuthPage() {
   }
 
   return (
-    <div>
-      {/* Header */}
-        <Header/>
-
+    <div className="min-h-screen flex flex-col">
       {/* Auth Form */}
       <div className="flex-grow flex items-center justify-center p-4">
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-4">
@@ -66,14 +61,18 @@ export default function AuthPage() {
           </form>
           <p className="text-center text-sm">
             {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
-            <button onClick={() => setIsLogin(!isLogin)} className="text-pink-600 underline">
+            <button
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-pink-600 underline"
+            >
               {isLogin ? 'Sign up' : 'Log in'}
             </button>
           </p>
         </div>
       </div>
 
-      <Footer/>
+      {/* Footer */}
+     
     </div>
   )
 }

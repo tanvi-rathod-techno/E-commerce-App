@@ -3,7 +3,7 @@ export default function Footer() {
       <footer className="bg-gray-100 text-sm text-gray-600 p-6 mt-10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
           <div>
-            <h3 className="font-bold text-black mb-2">ninico</h3>
+            <h3 className="font-bold text-black mb-2">ShopSphere</h3>
             <p>Elegant pink origami design three dimensional view and decoration co-exist. Great for adding a decorative touch to any room's decor.</p>
           </div>
           <div>
