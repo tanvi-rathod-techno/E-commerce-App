@@ -1,6 +1,7 @@
 // src/components/Header.tsx
 import { Link } from 'react-router-dom'
 import { ShoppingBag, Heart, ShoppingCart } from 'lucide-react'
+import { User } from 'lucide-react'
 
 export default function Header() {
   // Example count values — replace with actual Zustand/cart/wishlist logic
@@ -27,6 +28,7 @@ export default function Header() {
             )}
           </Link>
 
+
           <Link to="/cart" className="relative hover:text-pink-600">
             <ShoppingCart className="w-5 h-5" />
             {cartCount > 0 && (
@@ -35,6 +37,13 @@ export default function Header() {
               </span>
             )}
           </Link>
+
+
+           {/* Profile Icon with Redirect */}
+        <Link to="/profile">
+        <User className="w-8 h-8 cursor-pointer" />
+
+        </Link>
         </nav>
       </div>
     </header>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ShoppingCart, ArrowLeft, Plus, Minus } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { Cart, getAllCarts, getAllProducts, Product } from '../services/productService'
+import { Cart, getAllCarts, getAllProducts } from '../services/productService'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
