@@ -14,7 +14,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
       className="relative cursor-pointer border p-4 rounded shadow hover:shadow-lg transition"
     >
       {/* Hidden overlay that appears on hover */}
-      <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white">
+      <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white">
         <span className="text-xl font-bold"><Eye className="w-5 h-5" /></span>
       </div>
 
