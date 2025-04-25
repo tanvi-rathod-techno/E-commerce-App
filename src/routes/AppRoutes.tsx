@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 import Home from '../pages/Home'
-import CartPage from '../pages/CartPage'
-import WishlistPage from '../pages/WishlistPage'
-import ProfilePage from '../pages/ProfilePage'
+import CartPage from '../pages/Cart/CartPage'
+import WishlistPage from '../pages/Wishlist/WishlistPage'
+import ProfilePage from '../pages/Profile/ProfilePage'
 
 
 export default function AppRoutes() {

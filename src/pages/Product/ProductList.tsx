@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { getAllProducts } from '../services/productService'
-import { Product } from '../types/product'
-import ProductCard from '../components/ProductCard'
-import ProductModal from '../components/ProductModal'
+import { getAllProducts } from '../../services/productService'
+import { Product } from '../../types/product'
+import ProductCard from '../../components/Product/ProductCard'
+import ProductModal from '../../components/Product/ProductModal'
+import Pagination from '../../components/ui/Pagination'
 
 function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
@@ -45,38 +46,12 @@ function ProductList() {
         ))}
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex justify-center items-center gap-2 mt-6">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="px-4 py-2 border rounded hover:bg-gray-100 disabled:opacity-50"
-        >
-          Previous
-        </button>
-
-        {[...Array(totalPages)].map((_, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageChange(index + 1)}
-            className={`px-4 py-2 border rounded ${
-              currentPage === index + 1
-                ? 'bg-pink-600 text-white'
-                : 'hover:bg-gray-100'
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 border rounded hover:bg-gray-100 disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div>
+      {/* Pagination */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
 
       {/* Product Modal */}
       {selectedProduct && (

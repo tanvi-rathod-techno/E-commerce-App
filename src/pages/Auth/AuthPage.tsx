@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { login, signup } from '../services/authService'
-import { useAuthStore } from '../store/authStore'
-import Footer from '../components/Footer'
+import { login, signup } from '../../services/authService'
+import { useAuthStore } from '../../store/authStore'
+import InputField from '../../components/ui/InputField'
+import Button from '../../components/ui/Button'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -25,7 +26,6 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Auth Form */}
       <div className="flex-grow flex items-center justify-center p-4">
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-4">
           <h2 className="text-2xl font-bold text-center">
@@ -33,31 +33,29 @@ export default function AuthPage() {
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
-              <input
+              <InputField
                 type="text"
                 placeholder="Name"
-                className="w-full border p-2 rounded"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                name="name"
               />
             )}
-            <input
+            <InputField
               type="email"
               placeholder="Email"
-              className="w-full border p-2 rounded"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              name="email"
             />
-            <input
+            <InputField
               type="password"
               placeholder="Password"
-              className="w-full border p-2 rounded"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              name="password"
             />
-            <button className="w-full bg-pink-600 text-white py-2 rounded hover:bg-pink-700">
-              {isLogin ? 'Login' : 'Sign Up'}
-            </button>
+            <Button type="submit">{isLogin ? 'Login' : 'Sign Up'}</Button>
           </form>
           <p className="text-center text-sm">
             {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
@@ -70,9 +68,6 @@ export default function AuthPage() {
           </p>
         </div>
       </div>
-
-      {/* Footer */}
-     
     </div>
   )
 }

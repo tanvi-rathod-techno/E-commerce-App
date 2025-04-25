@@ -1,7 +1,7 @@
 import React from 'react';
-import Auth from '../pages/AuthPage'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
+import Auth from '../Auth/AuthPage'
+import Footer from '../../components/Footer'
+import Header from '../../components/Header'
 
 export default function ProfilePage() {
   return (

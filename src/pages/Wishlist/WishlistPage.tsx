@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Heart, ShoppingCart, ArrowLeft,Trash2 } from 'lucide-react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import Header from '../../components/Header'
+import Footer from '../../components/Footer'
 import { useNavigate } from 'react-router-dom'
 
 interface WishlistItem {
