@@ -1,4 +1,4 @@
-// ui/table.tsx
+// src/components/ui/Table.tsx
 import React from 'react'
 import { Plus, Minus } from 'lucide-react'
 import { Product } from '../../services/productService'

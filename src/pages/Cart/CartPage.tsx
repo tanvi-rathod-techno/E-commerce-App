@@ -1,4 +1,4 @@
-// CartPage.tsx
+// src/pages/CartPage.tsx
 import { useEffect, useState } from 'react'
 import { ShoppingCart, ArrowLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
