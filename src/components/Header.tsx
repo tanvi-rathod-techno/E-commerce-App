@@ -1,24 +1,31 @@
-// src/components/Header.tsx
-import { Link } from 'react-router-dom'
-import { ShoppingBag, Heart, ShoppingCart } from 'lucide-react'
-import { User } from 'lucide-react'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { ShoppingBag, Heart, ShoppingCart, User } from 'lucide-react'
+import { useAuthStore } from '../store/authStore'
 
 export default function Header() {
-  // Example count values — replace with actual Zustand/cart/wishlist logic
   const cartCount = 3
   const wishlistCount = 2
+  const { user, logout } = useAuthStore()
+  const [showMenu, setShowMenu] = useState(false)
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    localStorage.removeItem('user')
+    logout()
+    setShowMenu(false)
+    navigate('/profile')
+  }
 
   return (
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        {/* Logo and Brand */}
         <Link to="/" className="flex items-center gap-2 text-xl font-bold text-pink-600">
           <ShoppingBag className="w-6 h-6" />
           <span>ShopSphere</span>
         </Link>
 
-        {/* Navigation Icons with Count */}
-        <nav className="flex items-center gap-6 text-gray-700">
+        <nav className="flex items-center gap-6 text-gray-700 relative">
           <Link to="/wishlist" className="relative hover:text-pink-600">
             <Heart className="w-5 h-5" />
             {wishlistCount > 0 && (
@@ -27,7 +34,6 @@ export default function Header() {
               </span>
             )}
           </Link>
-
 
           <Link to="/cart" className="relative hover:text-pink-600">
             <ShoppingCart className="w-5 h-5" />
@@ -38,12 +44,27 @@ export default function Header() {
             )}
           </Link>
 
+          {/* Profile Icon and Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setShowMenu(!showMenu)}
+              className="flex items-center gap-1 hover:text-pink-600"
+            >
+              <User className="w-6 h-6" />
+              {user && <span className="text-sm">{user.username}</span>}
+            </button>
 
-           {/* Profile Icon with Redirect */}
-        <Link to="/profile">
-        <User className="w-8 h-8 cursor-pointer" />
-
-        </Link>
+            {showMenu && user && (
+              <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-md z-50">
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </nav>
       </div>
     </header>

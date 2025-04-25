@@ -65,10 +65,10 @@ export default function AuthPage() {
           <p className="text-center text-sm">
             {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
             <button
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={() => setIsLogin(isLogin)}
               className="text-pink-600 underline"
             >
-              {isLogin ? 'Sign up' : 'Log in'}
+             Log in
             </button>
           </p>
         </div>
