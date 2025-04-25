@@ -1,28 +1,38 @@
 import { useState } from 'react'
-import { login, signup } from '../../services/authService'
+import { useMutation } from '@tanstack/react-query'
+import { login } from '../../services/authService'
 import { useAuthStore } from '../../store/authStore'
 import InputField from '../../components/ui/InputField'
 import Button from '../../components/ui/Button'
+import { LoginPayload,User } from '../../types/auth'
+import { useNavigate } from 'react-router-dom'
+
 
 export default function AuthPage() {
+  const navigate = useNavigate()
   const [isLogin, setIsLogin] = useState(true)
-  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
+  const [username, setName] = useState('')
   const { setUser } = useAuthStore()
+
+  // TanStack Query's useMutation for login
+  const { mutateAsync: loginMutate, error } = useMutation<User, Error, LoginPayload>({
+    mutationFn: login
+  })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+  
     try {
-      const user = isLogin
-        ? await login({ email, password })
-        : await signup({ name, email, password })
+      const user: User = await loginMutate({ username, password })
       setUser(user)
-      alert(`${isLogin ? 'Logged in' : 'Signed up'} as ${user.name}`)
+      navigate('/')
     } catch (err) {
-      alert('Error during auth')
+      console.error('Login Error:', err)  // Add detailed logging
+      alert('Error during auth: ' + (err instanceof Error ? err.message : 'Unknown error'))
     }
   }
+  
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -32,22 +42,14 @@ export default function AuthPage() {
             {isLogin ? 'Sign In' : 'Sign Up'}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {!isLogin && (
+           
               <InputField
                 type="text"
-                placeholder="Name"
-                value={name}
+                placeholder="username"
+                value={username}
                 onChange={(e) => setName(e.target.value)}
-                name="name"
+                name="username"
               />
-            )}
-            <InputField
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              name="email"
-            />
             <InputField
               type="password"
               placeholder="Password"
@@ -55,8 +57,11 @@ export default function AuthPage() {
               onChange={(e) => setPassword(e.target.value)}
               name="password"
             />
-            <Button type="submit">{isLogin ? 'Login' : 'Sign Up'}</Button>
+            <Button type="submit">
+              {isLogin ? 'Login' : 'Sign Up'}
+            </Button>
           </form>
+          {error && <p className="text-red-500 text-center">{(error as Error).message}</p>}
           <p className="text-center text-sm">
             {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
             <button
