@@ -2,23 +2,33 @@ import { Heart, ShoppingCart, ArrowLeft, Trash2 } from 'lucide-react'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import { useNavigate } from 'react-router-dom'
-import { useWishlistStore } from '../../store/wishlistStore' // Import your Zustand store
+import { useWishlistStore } from '../../store/wishlistStore' // Import your Zustand wishlist store
+import { useCartStore } from '../../store/cartStore' // Import Zustand cart store
 import { Product } from '../../types/product' // Import Product type
 
 export default function WishlistPage() {
   const navigate = useNavigate()
 
-  const { wishlist, toggleWishlist } = useWishlistStore() // Zustand wishlist
+  const { wishlist, toggleWishlist } = useWishlistStore() // Zustand wishlist store
+  const { addToCart } = useCartStore() // Zustand cart store
 
-  // Handle add to cart logic (you can integrate Zustand cart store later)
+  // Handle add to cart logic
   const handleAddToCart = (product: Product) => {
     console.log('Adding product to cart:', product)
-    // TODO: Integrate Zustand cart logic
+
+    // Add product to cart store
+    addToCart(product)
+
+    // Remove product from wishlist after adding to cart
+    toggleWishlist(product)
+
+    // Optionally, navigate to the cart page
+    navigate('/cart')
   }
 
   // Handle remove from wishlist
   const handleRemoveFromWishlist = (product: Product) => {
-    toggleWishlist(product) // toggleWishlist already removes if it exists
+    toggleWishlist(product) // toggleWishlist removes the product if it exists
   }
 
   return (
