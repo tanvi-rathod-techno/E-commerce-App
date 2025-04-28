@@ -4,6 +4,7 @@ import Button from '../ui/Button'
 import { useAuthStore } from '../../store/authStore'
 import { useNavigate } from 'react-router-dom'
 import { addProductToCart } from '../../services/cartService';
+import { useCartStore } from '../../store/cartStore';
 
 interface ProductModalProps {
   product: Product
@@ -13,6 +14,7 @@ interface ProductModalProps {
 export default function ProductModal({ product, onClose }: ProductModalProps) {
   const { user } = useAuthStore();
   const navigate = useNavigate();
+  const { addToCart } = useCartStore();
 
   const handleAddToCart = async () => {
     if (!user) {
@@ -23,6 +25,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
         console.log(product)
         // Call the cart service to add the product to the cart
         await addProductToCart(product, user.id);
+        addToCart(product);
         // Redirect to the cart page after adding the product
         navigate('/cart');
       } catch (error) {

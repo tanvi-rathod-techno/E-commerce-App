@@ -1,63 +1,67 @@
-// src/pages/CartPage.tsx
-import { useEffect, useState } from 'react'
 import { ShoppingCart, ArrowLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { Cart, getAllCarts, getAllProducts, Product } from '../../services/productService'
+import { useCartStore } from '../../store/cartStore'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import Table from '../../components/ui/Table'
+import { useQuery } from '@tanstack/react-query'
+import { Product } from '../../types/product'
 
 export default function CartPage() {
-  const [carts, setCarts] = useState<Cart[]>([])
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
+  const cartItems = useCartStore((state) => state.cartItems)
+  const { removeFromCart, updateQuantity } = useCartStore()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [cartData, productData] = await Promise.all([getAllCarts(), getAllProducts()])
-        setCarts(cartData)
-        setProducts(productData)
-      } catch (error) {
-        console.error('Error fetching cart or products:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [])
-
-  const handleQtyChange = (cartId: number, productId: number, change: number) => {
-    setCarts(prev =>
-      prev.map(cart => {
-        if (cart.id === cartId) {
-          return {
-            ...cart,
-            products: cart.products.map(item =>
-              item.productId === productId
-                ? { ...item, quantity: Math.max(1, item.quantity + change) }
-                : item
-            )
+  // Fetch products individually based on cart productIds
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ['cart-products', cartItems.map(item => item.productId)],
+    queryFn: async () => {
+      const productFetches = cartItems.map((item) =>
+        fetch(`https://fakestoreapi.com/products/${item.productId}`).then((res) => {
+          if (!res.ok) {
+            throw new Error('Failed to fetch product')
           }
-        }
-        return cart
-      })
-    )
+          return res.json()
+        })
+      )
+      return Promise.all(productFetches) as Promise<Product[]>
+    },
+    enabled: cartItems.length > 0, // Only run if cart is not empty
+  })
+
+  const handleQtyChange = (productId: number, change: number) => {
+    const product = cartItems.find(item => item.productId === productId)
+    if (product) {
+      const newQuantity = Math.max(1, product.quantity + change)
+      updateQuantity(productId, newQuantity)
+    }
   }
 
-  const calculateTotal = (cart: Cart) => {
-    return cart.products.reduce((acc, item) => {
+  const calculateTotal = () => {
+    return cartItems.reduce((acc, item) => {
       const product = products.find(p => p.id === item.productId)
-      if (!product) return acc
-      return acc + (product.price ?? 0) * item.quantity
+      if (product) {
+        return acc + (product.price ?? 0) * item.quantity
+      }
+      return acc
     }, 0)
+  }
+
+  if (isLoading) {
+    return (
+      <>
+        <Header />
+        <div className="container mx-auto px-4 pt-2">
+          <p>Loading cart...</p>
+        </div>
+        <Footer />
+      </>
+    )
   }
 
   return (
     <>
       <Header />
-
       <div className="container mx-auto px-4 pt-2">
         <div className="flex items-center justify-between gap-3 mb-6">
           <div className="flex items-center gap-3">
@@ -69,37 +73,28 @@ export default function CartPage() {
           </button>
         </div>
 
-        {loading ? (
-          <p>Loading cart data...</p>
+        {cartItems.length === 0 ? (
+          <p>Your cart is empty.</p>
         ) : (
           <div className="space-y-8">
-            {carts.map(cart => (
-              <div key={cart.id} className="border rounded-lg shadow bg-white overflow-x-auto">
-                <div className="p-4 border-b flex justify-between">
-                  <h2 className="font-semibold text-lg">
-                    User #{cart.userId} - Cart #{cart.id}
-                  </h2>
-                  <span className="text-sm text-gray-500">
-                    Date: {new Date(cart.date).toLocaleDateString()}
-                  </span>
-                </div>
+            <div className="border rounded-lg shadow bg-white overflow-x-auto">
+             
 
-                <Table
-                  cartId={cart.id}
-                  products={cart.products}
-                  allProducts={products}
-                  onQtyChange={handleQtyChange}
-                />
+              {/* Cart Items Table */}
+              <Table
+                cartItems={cartItems}
+                products={products}
+                onQtyChange={handleQtyChange}
+                onRemove={removeFromCart}
+              />
 
-                <div className="p-4 text-right font-bold text-lg border-t">
-                  Total: ${calculateTotal(cart).toFixed(2)}
-                </div>
+              <div className="p-4 text-right font-bold text-lg border-t">
+                Total: ${calculateTotal().toFixed(2)}
               </div>
-            ))}
+            </div>
           </div>
         )}
       </div>
-
       <Footer />
     </>
   )

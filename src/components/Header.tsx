@@ -17,6 +17,14 @@ export default function Header() {
     navigate('/profile')
   }
 
+  const handleProfileClick = () => {
+    if (user) {
+      setShowMenu(!showMenu) // Show the menu if the user is logged in
+    } else {
+      navigate('/profile') // Redirect to sign-in page if the user is not logged in
+    }
+  }
+
   return (
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -47,11 +55,15 @@ export default function Header() {
           {/* Profile Icon and Dropdown */}
           <div className="relative">
             <button
-              onClick={() => setShowMenu(!showMenu)}
+              onClick={handleProfileClick}
               className="flex items-center gap-1 hover:text-pink-600"
             >
               <User className="w-6 h-6" />
-              {user && <span className="text-sm">{user.username}</span>}
+              {user ? (
+                <span className="text-sm">{user.username}</span>
+              ) : (
+                <span className="text-sm">Sign In</span> // Display "Sign In" if not logged in
+              )}
             </button>
 
             {showMenu && user && (

@@ -12,7 +12,7 @@ export const addProductToCart = async (product: Product, userId: number | undefi
 
   const cartItem: CartItem = {
     productId: product.id,
-    quantity: 1, // default quantity of 1
+    quantity: 1,
   };
 
   try {
@@ -31,9 +31,14 @@ export const addProductToCart = async (product: Product, userId: number | undefi
       throw new Error('Failed to add product to cart');
     }
 
-    return response.json();
+    const data = await response.json();
+    console.log('Added product to cart:', data);
+
+    return data;
   } catch (error) {
     console.error('Error adding product to cart:', error);
     throw error;
   }
 };
+
+
