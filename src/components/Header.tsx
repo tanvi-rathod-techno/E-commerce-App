@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ShoppingBag, Heart, ShoppingCart, User } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
+import { useCartStore } from '../store/cartStore'
 
 export default function Header() {
-  const cartCount = 3
+  const cartItems = useCartStore((state) => state.cartItems)
   const wishlistCount = 2
   const { user, logout } = useAuthStore()
   const [showMenu, setShowMenu] = useState(false)
@@ -19,11 +20,12 @@ export default function Header() {
 
   const handleProfileClick = () => {
     if (user) {
-      setShowMenu(!showMenu) // Show the menu if the user is logged in
+      setShowMenu(!showMenu) 
     } else {
-      navigate('/profile') // Redirect to sign-in page if the user is not logged in
+      navigate('/profile') 
     }
   }
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
 
   return (
     <header className="bg-white shadow sticky top-0 z-50">
