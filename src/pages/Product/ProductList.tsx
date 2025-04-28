@@ -5,6 +5,8 @@ import ProductCard from '../../components/Product/ProductCard'
 import ProductModal from '../../components/Product/ProductModal'
 import Pagination from '../../components/ui/Pagination'
 
+
+
 function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
@@ -13,13 +15,16 @@ function ProductList() {
   const PRODUCTS_PER_PAGE = 8
   const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE)
 
+
+
   useEffect(() => {
     getAllProducts().then(setProducts)
   }, [])
 
   const handleAddToCart = (product: Product) => {
-    console.log('Add to cart:', product)
-    // TODO: integrate Zustand cart store
+    console.log('Adding product to cart:', product)
+ 
+    // TODO: Integrate Zustand cart logic
   }
 
   const handlePageChange = (page: number) => {
@@ -38,11 +43,12 @@ function ProductList() {
       {/* Product Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {currentProducts.map(product => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onClick={() => setSelectedProduct(product)}
-          />
+         <ProductCard
+         key={product.id}
+         product={product}
+         onClick={() => setSelectedProduct(product)}
+       />
+       
         ))}
       </div>
 

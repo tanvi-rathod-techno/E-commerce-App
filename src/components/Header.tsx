@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ShoppingBag, Heart, ShoppingCart, User } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
 import { useCartStore } from '../store/cartStore'
+import { useWishlistStore } from '../store/wishlistStore'
 
 export default function Header() {
   const cartItems = useCartStore((state) => state.cartItems)
-  const wishlistCount = 2
+  const wishlistCount = useWishlistStore((state) => state.wishlist.length)
   const { user, logout } = useAuthStore()
   const [showMenu, setShowMenu] = useState(false)
   const navigate = useNavigate()
