@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Product } from '../../types/product'
 import { Trash } from 'lucide-react'
+import axios from 'axios'
 
 interface TableProps {
   cartItems: { productId: number; quantity: number }[]
@@ -15,6 +16,28 @@ export default function Table({
   onQtyChange,
   onRemove,
 }: TableProps) {
+  const [loading, setLoading] = useState(false)
+
+  const handleRemove = async (productId: number) => {
+    try {
+      setLoading(true)
+      // Assuming the user has a cart id, replace with actual cart ID
+      const cartId = 1 // Placeholder cart ID, replace with actual cart ID from your state or context
+      await axios.delete(`https://fakestoreapi.com/carts/${cartId}`, {
+        data: {
+          productId,
+        },
+      })
+
+      // After the API call is successful, update the local state
+      onRemove(productId)
+    } catch (error) {
+      console.error('Error removing product from cart:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full table-auto">
@@ -79,11 +102,12 @@ export default function Table({
                 {/* Remove Button */}
                 <td className="py-2 text-center">
                   <button
-                    onClick={() => onRemove(item.productId)}
+                    onClick={() => handleRemove(item.productId)}
                     className="text-red-600 hover:text-red-800"
+                    disabled={loading} // Disable button while loading
                   >
                     <Trash className="w-4 h-4" /> {/* Trash icon */}
-                    
+                    {loading && <span>Removing...</span>} {/* Show loading indicator */}
                   </button>
                 </td>
               </tr>

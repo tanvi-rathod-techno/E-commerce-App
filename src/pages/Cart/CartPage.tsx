@@ -47,6 +47,15 @@ export default function CartPage() {
     }, 0)
   }
 
+  const handleCheckout = () => {
+    navigate('/checkout', {
+      state: {
+        cartItems: cartItems, // Pass cart items directly here
+        products: products,   // Pass product details if needed
+      },
+    });
+  }
+
   if (isLoading) {
     return (
       <>
@@ -78,8 +87,6 @@ export default function CartPage() {
         ) : (
           <div className="space-y-8">
             <div className="border rounded-lg shadow bg-white overflow-x-auto">
-             
-
               {/* Cart Items Table */}
               <Table
                 cartItems={cartItems}
@@ -90,6 +97,16 @@ export default function CartPage() {
 
               <div className="p-4 text-right font-bold text-lg border-t">
                 Total: ${calculateTotal().toFixed(2)}
+              </div>
+
+              {/* Proceed to Checkout Button */}
+              <div className="p-4 text-right">
+                <button
+                  onClick={handleCheckout}
+                  className="bg-pink-600 text-white py-2 px-6 rounded hover:bg-pink-700 transition"
+                >
+                  Proceed to Checkout
+                </button>
               </div>
             </div>
           </div>

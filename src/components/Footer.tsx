@@ -27,10 +27,9 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-black mb-2">Newsletter</h4>
             <input type="text" placeholder="Enter email" className="border rounded px-2 py-1 w-full mb-2" />
-            <button className="bg-red-500 text-white px-4 py-2 rounded">Subscribe</button>
+            <button className="bg-pink-600 text-white hover:bg-pink-700 px-4 py-2 rounded">Subscribe</button>
           </div>
         </div>
       </footer>
     )
   }
-  
