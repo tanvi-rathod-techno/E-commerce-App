@@ -11,4 +11,3 @@ export interface Product {
       count: number
     }
   }
-  
